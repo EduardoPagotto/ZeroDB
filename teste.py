@@ -12,7 +12,7 @@ from bson.objectid import ObjectId
 from tinydb import TinyDB, Query, where 
 from tinydb.operations import increment
 
-from ZeroTransaction import ZeroTransaction, ZeroTinyDB
+from ZeroDB.ZeroTransaction import ZeroTransaction, ZeroTinyDB
 
 def main():
 
@@ -79,6 +79,7 @@ def main():
 
 
 if __name__ == "__main__":
+    
     #main()
 
     zdb = ZeroTinyDB('./db_teste.json', sort_keys=True, indent=4, separators=(',', ': '))

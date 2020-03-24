@@ -22,7 +22,6 @@ def records(cls):
         self.record.append(cls(*args, **kwargs))
     return proxy
 
-
 class ZeroTinyDB(object):
     def __init__(self, *args, **kwargs):
         self.db = TinyDB(*args, **kwargs)
