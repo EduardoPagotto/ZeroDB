@@ -5,3 +5,6 @@ Update on 20200324
 '''
 
 from ZeroDB.ZeroTransaction import ZeroTinyDB, ZeroTransaction
+
+__version__ = "0.0.1"
+__build__ = "20200324"
