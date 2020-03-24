@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 '''
 Created on 20200323
-Update on 20200323
+Update on 20200324
 @author: Eduardo Pagotto
  '''
 
-from datetime import datetime
+import logging
 
+from datetime import datetime
 from bson.objectid import ObjectId
 
 from tinydb import TinyDB, Query, where 
@@ -81,23 +82,26 @@ def main():
 if __name__ == "__main__":
     
     #main()
+    logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+    
+    zdb = ZeroTinyDB('./data/db_teste.json', sort_keys=True, indent=4, separators=(',', ': '))
+    tabela = zdb.table_access('tabela01')
 
-    zdb = ZeroTinyDB('./db_teste.json', sort_keys=True, indent=4, separators=(',', ': '))
-    tabela = zdb.table('tabela01')
+    zdb.log.info('Iniciado')
 
     try:
-
+        
         with ZeroTransaction(tabela) as ztr:
             key = ztr.insert({'id_data': str(ObjectId()),
-                              'idade':10,
-                              'status':0,
-                              'nome':'Eduardo Pagotto',
-                              'sexo':True,
-                              'last':datetime.timestamp(datetime.now())})
+                                'idade':10,
+                                'status':0,
+                                'nome':'Eduardo Pagotto',
+                                'sexo':True,
+                                'last':datetime.timestamp(datetime.now())})
 
-            print ('key ' + str(key))
+            zdb.log.info('key %s', str(key))
 
     except Exception as exp:
-        print('erro: ' + str(exp))
+        zdb.log.error('erro: %s', str(exp))
 
-    print('fim')
+    zdb.log.info('fim')
