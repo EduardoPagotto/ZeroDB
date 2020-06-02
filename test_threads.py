@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Created on 20200324
-Update on 20200324
+Update on 20200602
 @author: Eduardo Pagotto
  '''
 
@@ -12,10 +12,7 @@ import threading
 from datetime import datetime
 from bson.objectid import ObjectId
 
-from tinydb import Query, where 
-from tinydb.operations import increment
-
-from ZeroDB.ZeroTransaction import ZeroTransaction, ZeroTinyDB
+from ZeroDB import ZeroTransaction, ZeroTinyDB
 
 class Thread_Test(object):
     def __init__(self, table_access, id, delay, espera):
@@ -59,13 +56,13 @@ def main():
     zdb = ZeroTinyDB('./data/db_teste1.json', sort_keys=True, indent=4, separators=(',', ': '))
 
     zdb.log.info('Iniciado')
-    
+
     table_access = zdb.table_access('tabela01')
 
     lista_classes = []
     lista_threads = []
 
-    for indice in range(15):
+    for indice in range(1):
         lista_classes.append(Thread_Test(table_access, indice, 1, 5))
 
     for item in lista_classes:
@@ -80,3 +77,8 @@ def main():
             lista_threads.remove(item)
             break
         time.sleep(1)
+
+if __name__ == "__main__":
+
+    logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+    main()

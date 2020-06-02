@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 '''
 Created on 20200324
-Update on 20200324
+Update on 20200602
 @author: Eduardo Pagotto
  '''
 
 from datetime import datetime
 from bson.objectid import ObjectId
 
-from tinydb import TinyDB, Query, where 
+from tinydb import TinyDB, Query, where
 from tinydb.operations import increment
 
 def main():
@@ -38,7 +38,7 @@ def main():
                'idade':55,
                'nome':'Eduardo Pagotto',
                'sexo':True,
-               'last':datetime.timestamp(datetime.now())})              
+               'last':datetime.timestamp(datetime.now())})
 
     tabela.insert({'id_data': str(ObjectId()),
                'status':0,
@@ -54,7 +54,7 @@ def main():
         tabela.update(increment('status'), where('id_data')==item['id_data'])
 
     # query
-    dados = Query() 
+    dados = Query()
 
     result = tabela.search((dados.idade > 50) & (dados.sexo == True))
     print(str(result))

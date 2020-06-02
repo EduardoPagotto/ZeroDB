@@ -1,47 +1,15 @@
 #!/usr/bin/env python3
 '''
 Created on 20200323
-Update on 20200324
+Update on 20200602
 @author: Eduardo Pagotto
  '''
 
 import threading
 import logging
 
-from tinydb import TinyDB 
-
-class AbortSignal(Exception):
-    pass
-
-def abort():
-    raise AbortSignal
-
-# def records(cls):
-#     @wraps(cls)
-#     def proxy(self, *args, **kwargs):
-#         self.record.append(cls(*args, **kwargs))
-#     return proxy
-
-class ZeroTinyDB(object):
-    def __init__(self, *args, **kwargs):
-        self.db = TinyDB(*args, **kwargs)
-        self.mutex_access = threading.Lock()
-        self.log = logging.getLogger('ZeroDB')
-        
-    def table_access(self, *args, **kwargs):
-        return self.mutex_access, self.db.table(*args, **kwargs)
-
-class ProxyCall(object):
-    def __init__(self, function, table, count):
-        self.function = function
-        self.table = table
-        self.log = logging.getLogger('ZeroDB')
-        self.count = count
-
-    def __call__(self, *args, **kargs):
-        self.log.debug('ProxyCall %d: func: %s, args: %s, kargs:%s', self.count, str(self.function), str(args), str(kargs))
-        function = getattr(self.table, self.function)
-        return function(*args, **kargs)
+from ZeroDB.ZeroDB import ZeroTinyDB, AbortSignal
+from ZeroDB.ProxyCall import ProxyCall
 
 class ZeroTransaction(object):
 
