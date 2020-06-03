@@ -7,6 +7,7 @@ Update on 20200603
 
 #pylint: disable=C0301, C0116, W0703, C0103, C0115
 
+import sys
 import logging
 from datetime import datetime
 from bson.objectid import ObjectId
@@ -24,7 +25,11 @@ if __name__ == '__main__':
     log = logging.getLogger('ClientTest')
     log.info('Iniciado')
 
-    zdb = ZeroDBClient('uds://uds_db_teste', './data/db_teste1.json')
+    try:
+        zdb = ZeroDBClient('uds://./data/uds_db_teste', './data/db_teste1.json')
+    except Exception as exp:
+        log.error('Falha critica conexao: %s', str(exp))
+        sys.exit()
 
     table_access = zdb.table_access('tabela01')
 

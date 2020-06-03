@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     log.info('Iniciado')
 
-    server = ZeroDBServer('uds://uds_db_teste')
+    server = ZeroDBServer('uds://./data/uds_db_teste')
     server.loop_blocked(GracefulKiller())
 
     log.info('Finalizado')

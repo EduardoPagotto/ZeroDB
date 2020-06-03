@@ -25,6 +25,7 @@ class ZeroDBServer(ServiceObject):
     def __init__(self, str_connection):
         super().__init__(str_connection, self)  # tcp://127.0.0.1:5151 #uds://./uds_db_teste
         self.log = logging.getLogger('ZeroDB.Server')
+        self.log.info('Servidor ativo: %s', str_connection)
         self.mapa = []
 
     def connect(self, *args, **kargs):
