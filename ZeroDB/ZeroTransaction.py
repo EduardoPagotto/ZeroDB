@@ -8,7 +8,7 @@ Update on 20200602
 import threading
 import logging
 
-from ZeroDB.ZeroDB import ZeroTinyDB, AbortSignal
+from ZeroDB.Utils import AbortSignal
 from ZeroDB.ProxyCall import ProxyCall
 
 class ZeroTransaction(object):

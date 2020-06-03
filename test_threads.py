@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Created on 20200324
-Update on 20200602
+Update on 20200603
 @author: Eduardo Pagotto
  '''
 
@@ -10,9 +10,10 @@ import logging
 import threading
 
 from datetime import datetime
-from bson.objectid import ObjectId
+#from bson.objectid import ObjectId
 
-from ZeroDB import ZeroTransaction, ZeroTinyDB
+from ZeroDB import ZeroTransaction #, ZeroTinyDB
+from ZeroDB.ZeroDB import ClientZeroDB
 
 class Thread_Test(object):
     def __init__(self, table_access, id, delay, espera):
@@ -53,8 +54,7 @@ class Thread_Test(object):
 
 def main():
 
-    zdb = ZeroTinyDB('./data/db_teste1.json', sort_keys=True, indent=4, separators=(',', ': '))
-
+    zdb = ClientZeroDB('uds://uds_db_teste', './data/db_teste1.json')
     zdb.log.info('Iniciado')
 
     table_access = zdb.table_access('tabela01')

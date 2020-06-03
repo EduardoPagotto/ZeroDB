@@ -9,18 +9,30 @@ Update on 20200602
 
 import logging
 
-from Zero import ServiceObject
-from Zero import ExceptionZeroRPC
+from tinydb import TinyDB
+
+from Zero import ServiceObject #, ExceptionZeroRPC
+
+
+class MapDataDB(object):
+    def __init__(self, *args, **kargs):
+        self.db = TinyDB(*args, **kargs)
+        self.tables = []
+
+    def setTable(self, table_name):
+        self.tables.append(table_name)
+
 
 class ServerRPC(ServiceObject):
     def __init__(self):
         self.log = logging.getLogger('ServerZeroDB')
         super().__init__('uds://uds_db_teste', self)  # tcp://127.0.0.1:5151 #uds://./uds_db_teste
-        #self.files = []
+        self.mapa = []
         #self.tables_name = []
 
-    def connect(self, file, table_name):
-        pass
+    def connect(self, *args, **kargs):
+        item = MapDataDB(*args, **kargs)
+        #zdb = ZeroTinyDB(*args, **kargs)
 
     # #@ServiceObject.rpc_call(rpc.GET_DICIONARIO_INTERFACE, input=('d',), output=('d'))
     # def get_dict(self, dicionario):

@@ -1,32 +1,35 @@
 #!/usr/bin/env python3
 '''
 Created on 20200602
-Update on 20200602
+Update on 20200603
 @author: Eduardo Pagotto
  '''
 
 import threading
 import logging
 
-from tinydb import TinyDB
+from Zero import ServiceBus
 
-class AbortSignal(Exception):
-    pass
-
-def abort():
-    raise AbortSignal
-
-# def records(cls):
-#     @wraps(cls)
-#     def proxy(self, *args, **kwargs):
-#         self.record.append(cls(*args, **kwargs))
-#     return proxy
-
-class ZeroTinyDB(object):
-    def __init__(self, *args, **kwargs):
-        self.db = TinyDB(*args, **kwargs)
+class ClientZeroDB(ServiceBus):
+    """[Classe de Conexao ao Servidor remoto]
+    Arguments:
+        ServiceBus {[type]} -- [description]
+    """
+    def __init__(self, connection_str, file_data):
+        """[summary]
+        Arguments:
+            connection_str {[type]} -- [String de conexao]
+            file_data {[type]} -- [Arquivo de db]
+        """
+        super().__init__(connection_str)
+        self.log = logging.getLogger('ZeroDB.Client')
+        self.peer = self.getObject()
+        self.peer.connect(file_data, sort_keys=True, indent=4, separators=(',', ': '))
         self.mutex_access = threading.Lock()
-        self.log = logging.getLogger('ZeroDB')
 
     def table_access(self, *args, **kwargs):
-        return self.mutex_access, self.db.table(*args, **kwargs)
+        """[Acesso a trava e conexao remota]
+        Returns:
+            [Tupla(mutex, proxy)] -- [Tupla com trava e metodos remotos]
+        """
+        return self.mutex_access, self.peer #self.db.table(*args, **kwargs)
