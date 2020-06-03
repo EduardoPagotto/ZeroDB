@@ -12,8 +12,7 @@ import threading
 from datetime import datetime
 #from bson.objectid import ObjectId
 
-from ZeroDB import ZeroTransaction #, ZeroTinyDB
-from ZeroDB.ZeroDB import ClientZeroDB
+from ZeroDB import ZeroTransaction, ZeroDBClient #, ZeroTinyDB
 
 class Thread_Test(object):
     def __init__(self, table_access, id, delay, espera):
@@ -54,7 +53,7 @@ class Thread_Test(object):
 
 def main():
 
-    zdb = ClientZeroDB('uds://uds_db_teste', './data/db_teste1.json')
+    zdb = ZeroDBClient('uds://uds_db_teste', './data/db_teste1.json')
     zdb.log.info('Iniciado')
 
     table_access = zdb.table_access('tabela01')

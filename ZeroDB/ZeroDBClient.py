@@ -5,12 +5,14 @@ Update on 20200603
 @author: Eduardo Pagotto
  '''
 
+#pylint: disable=C0301, C0116, W0703, C0103, C0115
+
 import threading
 import logging
 
 from Zero import ServiceBus
 
-class ClientZeroDB(ServiceBus):
+class ZeroDBClient(ServiceBus):
     """[Classe de Conexao ao Servidor remoto]
     Arguments:
         ServiceBus {[type]} -- [description]
