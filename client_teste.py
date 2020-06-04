@@ -31,12 +31,10 @@ if __name__ == '__main__':
         log.error('Falha critica conexao: %s', str(exp))
         sys.exit()
 
-    table_access = zdb.table_access('tabela01')
-
     id_teste = str(ObjectId())
 
     try:
-        with ZeroTransaction(table_access) as ztr:
+        with ZeroTransaction(zdb, 'tabela01') as ztr:
             #time.sleep(self.espara)
 
             ztr.insert({'id_data':  str(ObjectId()),

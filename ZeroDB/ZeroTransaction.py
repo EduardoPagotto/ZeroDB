@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Created on 20200323
-Update on 20200602
+Update on 20200603
 @author: Eduardo Pagotto
  '''
 
@@ -16,27 +16,29 @@ class ZeroTransaction(object):
     serial = 0
     mutex_serial = threading.Lock()
 
-    def __init__(self, table_access):
+    def __init__(self, client, table_name):
 
         with ZeroTransaction.mutex_serial:
 
             self.count = ZeroTransaction.serial
             ZeroTransaction.serial += 1
 
-            self.table = table_access[1]
-            self.mutex_free = table_access[0]
+            self.client = client
+            self.table_name = table_name
             self.log = logging.getLogger('ZeroDB')
             self.log.debug('Transaction %d', self.count)
 
     def __enter__(self):
         self.log.debug('acquire %d', self.count)
-        self.mutex_free.acquire()
+        self.client.mutex_access.acquire()
+        self.client.peer.select_table(self.client.db_name, self.table_name)
         self.log.debug('acquired %d', self.count)
         return self
 
     def __exit__(self, type, value, traceback):
         #if not traceback: # FIXME: ver como se comporta no crash
-        self.mutex_free.release()
+        self.client.mutex_access.release()
+        self.client.peer.un_select_table(self.client.db_name)
         self.log.debug('release %d', self.count)
         return isinstance(value, AbortSignal)
 
@@ -45,5 +47,4 @@ class ZeroTransaction(object):
         if name == '__iter__':
             return None
 
-        return ProxyCall(name, self.table, self.count)
-
+        return ProxyCall(name, self.client, self.table_name, self.count)

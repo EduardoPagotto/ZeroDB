@@ -26,12 +26,6 @@ class ZeroDBClient(ServiceBus):
         super().__init__(connection_str)
         self.log = logging.getLogger('ZeroDB.Client')
         self.peer = self.getObject()
-        self.peer.connect(file_data, sort_keys=True, indent=4, separators=(',', ': '))
+        self.db_name = self.peer.connect(file_data, sort_keys=True, indent=4, separators=(',', ': '))
         self.mutex_access = threading.Lock()
 
-    def table_access(self, *args, **kwargs):
-        """[Acesso a trava e conexao remota]
-        Returns:
-            [Tupla(mutex, proxy)] -- [Tupla com trava e metodos remotos]
-        """
-        return self.mutex_access, self.peer #self.db.table(*args, **kwargs)
