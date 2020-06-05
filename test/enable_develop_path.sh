@@ -1,2 +1,2 @@
 #!/bin/bash
-export PYTHONPATH=$PYTHONPATH:~/Projetos/Zero
+export PYTHONPATH=$PYTHONPATH:~/Projetos/Zero:~/Projetos/ZeroDB

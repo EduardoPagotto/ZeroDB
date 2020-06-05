@@ -1,2 +1,2 @@
 [MASTER]
-init-hook='import os; sys; sys.path.append("/home/pagotto/Projetos/Zero")'
+init-hook='import os; sys; sys.path.append("/home/pagotto/Projetos/Zero"); sys.path.append("/home/pagotto/Projetos/ZeroDB")'

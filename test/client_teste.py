@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Created on 20200603
-Update on 20200603
+Update on 20200605
 @author: Eduardo Pagotto
 '''
 
@@ -45,6 +45,6 @@ if __name__ == '__main__':
                         'last':datetime.timestamp(datetime.now())})
 
     except Exception as exp:
-        log.error('erro %d: %s',id_teste, str(exp))
+        log.error('erro %s: %s', id_teste, str(exp))
 
-    log.debug('End: %d', id_teste)
+    log.debug('End: %s', id_teste)
