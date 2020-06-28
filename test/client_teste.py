@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Created on 20200603
-Update on 20200605
+Update on 20200627
 @author: Eduardo Pagotto
 '''
 
@@ -12,7 +12,7 @@ import logging
 from datetime import datetime
 from bson.objectid import ObjectId
 
-from ZeroDB import ZeroDBClient, ZeroTransaction
+from ZeroDB import ZeroDBClient, ZeroDbLock
 
 if __name__ == '__main__':
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     id_teste = str(ObjectId())
 
     try:
-        with ZeroTransaction(zdb, 'tabela01') as ztr:
+        with ZeroDbLock(zdb, 'tabela01') as ztr:
             #time.sleep(self.espara)
 
             ztr.insert({'id_data':  str(ObjectId()),

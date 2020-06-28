@@ -8,7 +8,7 @@ Update on 20200603
 
 from ZeroDB.ZeroDBServer import ZeroDBServer
 from ZeroDB.ZeroDBClient import ZeroDBClient
-from ZeroDB.ZeroTransaction import ZeroTransaction
+from ZeroDB.ZeroDbLock import ZeroDbLock
 
-__version__ = "0.0.2"
-__build__ = "20200603"
+__version__ = "0.0.3"
+__build__ = "20200627"
