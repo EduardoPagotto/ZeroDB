@@ -15,7 +15,7 @@
             "name": "Server_teste",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/server_teste.py",
+            "program": "${workspaceFolder}/test/server_teste.py",
             "console": "integratedTerminal",
             "env": {"PYTHONPATH": "${workspaceFolder}" },
             "args": []
@@ -24,7 +24,7 @@
             "name": "Client_test",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/client_teste.py",
+            "program": "${workspaceFolder}/test/client_teste.py",
             "console": "integratedTerminal",
             "env": {"PYTHONPATH": "${workspaceFolder}" },
             "args": []

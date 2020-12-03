@@ -11,17 +11,17 @@ import logging
 from ZeroDB.Utils import AbortSignal
 from ZeroDB.ProxyCall import ProxyCall
 
-class ZeroTransaction(object):
+class ZeroDbLock(object):
 
     serial = 0
     mutex_serial = threading.Lock()
 
     def __init__(self, client, table_name):
 
-        with ZeroTransaction.mutex_serial:
+        with ZeroDbLock.mutex_serial:
 
-            self.count = ZeroTransaction.serial
-            ZeroTransaction.serial += 1
+            self.count = ZeroDbLock.serial
+            ZeroDbLock.serial += 1
 
             self.client = client
             self.table_name = table_name

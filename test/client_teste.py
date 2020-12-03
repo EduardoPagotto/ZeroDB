@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Created on 20200603
-Update on 20200605
+Update on 20200703
 @author: Eduardo Pagotto
 '''
 
@@ -12,7 +12,10 @@ import logging
 from datetime import datetime
 from bson.objectid import ObjectId
 
-from ZeroDB import ZeroDBClient, ZeroTransaction
+from tinydb import Query, where
+from tinydb.operations import increment
+
+from ZeroDB import ZeroDBClient, ZeroDbLock
 
 if __name__ == '__main__':
 
@@ -34,15 +37,65 @@ if __name__ == '__main__':
     id_teste = str(ObjectId())
 
     try:
-        with ZeroTransaction(zdb, 'tabela01') as ztr:
+        with ZeroDbLock(zdb, 'tabela01') as ztr:
             #time.sleep(self.espara)
 
-            ztr.insert({'id_data':  str(ObjectId()),
-                        'idade':10,
-                        'status':0,
-                        'nome':'Eduardo Pagotto',
-                        'sexo':True,
-                        'last':datetime.timestamp(datetime.now())})
+            # inserção dado
+            val01 = ztr.insert({'id_data': str(ObjectId()),
+                                'idade':10,
+                                'status':0,
+                                'nome':'Eduardo Pagotto',
+                                'sexo':True,
+                                'last':datetime.timestamp(datetime.now())})
+
+            val02 = ztr.insert({'id_data': str(ObjectId()),
+                                'status':0,
+                                'idade':51,
+                                'nome':'Eduardo Pagotto',
+                                'sexo':True,
+                                'last':datetime.timestamp(datetime.now())})
+
+            val03 = ztr.insert({'id_data': str(ObjectId()),
+                                'status':0,
+                                'idade':55,
+                                'nome':'Eduardo Pagotto',
+                                'sexo':True,
+                                'last':datetime.timestamp(datetime.now())})
+
+            val04 = ztr.insert({'id_data': str(ObjectId()),
+                                'status':0,
+                                'nome':'Eduardo Pagotto',
+                                'sexo':False,
+                                'idade':30,
+                                'last':datetime.timestamp(datetime.now())})
+
+            # query com where
+            result2 = ztr.search(where('sexo') == False)
+            log.debug(str(result2))
+
+            for item in result2:
+                ztr.update(increment('status'), where('id_data')==item['id_data'])
+
+            # query
+            dados = Query()
+
+            result = ztr.search((dados.idade > 50) & (dados.sexo == True))
+            log.debug(str(result))
+
+            ultimo = None
+            for item in result:
+                # update
+                novo = {'last': datetime.timestamp(datetime.now()), 'status':3}
+                ztr.update(novo, where('id_data') == item['id_data'])
+                ultimo = item
+
+            ztr.remove(dados.id_data == ultimo['id_data'])
+
+            lista_existe = ztr.search(where('id_data') == ultimo['id_data'])
+
+            # Mostra tudo
+            result = ztr.all()
+            log.debug(str(result))
 
     except Exception as exp:
         log.error('erro %s: %s', id_teste, str(exp))
