@@ -28,8 +28,13 @@ if __name__ == '__main__':
     log = logging.getLogger('ClientTest')
     log.info('Iniciado')
 
+    zdb = None
+    sdb = None
+
     try:
-        zdb = ZeroDBClient('uds://./data/uds_db_teste', './data/db_teste1.json')
+        zdb = ZeroDBClient('uds://./data/uds_db_teste')
+        sdb = zdb.open('db_teste1')
+
     except Exception as exp:
         log.error('Falha critica conexao: %s', str(exp))
         sys.exit()
@@ -37,7 +42,7 @@ if __name__ == '__main__':
     id_teste = str(ObjectId())
 
     try:
-        with ZeroDbLock(zdb, 'tabela01') as ztr:
+        with ZeroDbLock(sdb, 'tabela01') as ztr:
             #time.sleep(self.espara)
 
             # inserção dado
