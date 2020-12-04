@@ -51,7 +51,7 @@ class ProxyDB(object):
 
         session = None
         for st in self.sessions:
-            if st.database_name == kargs['__session_id']:
+            if st.id == kargs['__session_id']:
                 session = st
 
         if session is None:
@@ -77,63 +77,48 @@ class ZeroDBServer(ServiceObject):
         session = None
         for st in self.sessions:
             if st.database_name == database_name:
+                self.log.info('refercenc server session: %s', st.id)
                 session = st
 
         if session is None:
             session = SessionServerDB(database_name)
+            self.log.info('new server session: %s', session.id)
             self.sessions.append(session)
 
         return session.id
 
-    def enter_trans(self, id : str):
+    def __find_session(self, id : str) -> SessionServerDB:
         for session in self.sessions:
             if session.id == id:
-                session.lock()
+                return session
 
-        raise Exception("Id invalido: %s", id)
+        raise Exception('session id not fond: %s', id)
 
+    def enter_trans(self, id : str):
+        session = self.__find_session(id)
+        session.lock()
 
     def exit_trans(self, id : str):
-        for session in self.sessions:
-            if session.id == id:
-                session.unlock()
-
-        raise Exception("Id invalido: %s", id)
+        session = self.__find_session(id)
+        session.unlock()
 
     def table(self, id : str, name : str) -> None:
-        for session in self.sessions:
-            if session.id == id:
-                session.setTable(name)
-
-        raise Exception("Id invalido: %s", id)
+        session = self.__find_session(id)
+        session.setTable(name)
 
     # def insert(self, id : str, document : Dict):
-
-    #     for session in self.sessions:
-    #         if session.id == id:
-    #             with session.critical_write:
-    #                 session.table.insert(document)
-
-    #             return
-
-    #     raise Exception("Id invalido: %s", id)
+    #     session = self.__find_session(id)
+    #     with session.critical_write:
+    #         session.table.insert(document)
 
     # def select_table(self, id : str, table_name : str):
-    #     for session in self.sessions:
-    #         if session.id == id:
-    #             session.lock()
-    #             session.setTable(table_name)
-    #             return
-
-    #     raise Exception("Id invalido: %s", id)
+    #     session = self.__find_session(id)
+    #     session.lock()
+    #     session.setTable(table_name)
 
     # def un_select_table(self, id : str):
-    #     for session in self.sessions:
-    #         if session.id == id:
-    #             session.unlock()
-    #             return
-
-    #     raise Exception("Id invalido: %s", id)
+    #     session = self.__find_session(id)
+    #     session.unlock()
 
     def __getattr__(self, function_name):
         if function_name == '__iter__':

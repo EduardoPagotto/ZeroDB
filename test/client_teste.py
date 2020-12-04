@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 '''
 Created on 20200603
-Update on 20200703
+Update on 20201204
 @author: Eduardo Pagotto
 '''
-
-#pylint: disable=C0301, C0116, W0703, C0103, C0115
 
 import sys
 import logging
