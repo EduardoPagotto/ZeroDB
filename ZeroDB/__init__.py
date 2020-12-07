@@ -6,9 +6,11 @@ Update on 20200603
 
 #pylint: disable=C0301, C0116, W0703, C0103, C0115
 
-from ZeroDB.ZeroDBServer import ZeroDBServer
-from ZeroDB.ZeroDBClient import ZeroDBClient
-from ZeroDB.ZeroDbLock import ZeroDbLock
+# from ZeroDB.ZeroDBServer import ZeroDBServer
+# from ZeroDB.ZeroDBClient import ZeroDBClient
+# from ZeroDB.ZeroDbLock import ZeroDbLock
+
+#from ZeroDB.server import ZdbServer
 
 __version__ = "0.0.3"
 __build__ = "20200627"

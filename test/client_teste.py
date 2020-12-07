@@ -14,7 +14,9 @@ from tinydb import Query, queries, where
 import tinydb
 from tinydb.operations import increment
 
-from ZeroDB import ZeroDBClient, ZeroDbLock
+#from ZeroDB import ZeroDBClient, ZeroDbLock
+#from ZeroDB.client.ZdbClient import ZdbClient, ZdbLock
+from ZeroDB.zdb_client import ZdbClient, ZdbLock
 
 if __name__ == '__main__':
 
@@ -31,7 +33,7 @@ if __name__ == '__main__':
     sdb = None
 
     try:
-        zdb = ZeroDBClient('uds://./data/uds_db_teste')
+        zdb = ZdbClient('uds://./data/uds_db_teste')
         sdb = zdb.open('db_teste1')
 
     except Exception as exp:
@@ -41,7 +43,7 @@ if __name__ == '__main__':
     id_teste = str(ObjectId())
 
     try:
-        with ZeroDbLock(sdb, 'tabela01') as ztr:
+        with ZdbLock(sdb, 'tabela01') as ztr:
             #time.sleep(self.espara)
 
             # inserção dado
@@ -73,37 +75,37 @@ if __name__ == '__main__':
                                 'idade':30,
                                 'last':datetime.timestamp(datetime.now())})
 
-            querie = tinydb.Query()
-            #var = querie.sexo == False
-            result2 = ztr.search(querie.sexo == False)
+            # querie = tinydb.Query()
+            # #var = querie.sexo == False
+            # result2 = ztr.search(querie.sexo == False)
 
-            # query com where
-            result2 = ztr.search(where('sexo') == False)
-            log.debug(str(result2))
+            # # query com where
+            # result2 = ztr.search(where('sexo') == False)
+            # log.debug(str(result2))
 
-            for item in result2:
-                ztr.update(increment('status'), where('id_data')==item['id_data'])
+            # for item in result2:
+            #     ztr.update(increment('status'), where('id_data')==item['id_data'])
 
-            # query
-            dados = Query()
+            # # query
+            # dados = Query()
 
-            result = ztr.search((dados.idade > 50) & (dados.sexo == True))
-            log.debug(str(result))
+            # result = ztr.search((dados.idade > 50) & (dados.sexo == True))
+            # log.debug(str(result))
 
-            ultimo = None
-            for item in result:
-                # update
-                novo = {'last': datetime.timestamp(datetime.now()), 'status':3}
-                ztr.update(novo, where('id_data') == item['id_data'])
-                ultimo = item
+            # ultimo = None
+            # for item in result:
+            #     # update
+            #     novo = {'last': datetime.timestamp(datetime.now()), 'status':3}
+            #     ztr.update(novo, where('id_data') == item['id_data'])
+            #     ultimo = item
 
-            ztr.remove(dados.id_data == ultimo['id_data'])
+            # ztr.remove(dados.id_data == ultimo['id_data'])
 
-            lista_existe = ztr.search(where('id_data') == ultimo['id_data'])
+            # lista_existe = ztr.search(where('id_data') == ultimo['id_data'])
 
-            # Mostra tudo
-            result = ztr.all()
-            log.debug(str(result))
+            # # Mostra tudo
+            # result = ztr.all()
+            # log.debug(str(result))
 
     except Exception as exp:
         log.error('erro %s: %s', id_teste, str(exp))

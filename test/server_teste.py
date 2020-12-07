@@ -10,7 +10,7 @@ Update on 20200603
 import logging
 
 from Zero import GracefulKiller
-from ZeroDB import ZeroDBServer
+from ZeroDB.zdb_server import ZdbServer
 
 if __name__ == '__main__':
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     log.info('Iniciado')
 
-    server = ZeroDBServer('uds://./data/uds_db_teste')
+    server = ZdbServer('uds://./data/uds_db_teste')
     server.loop_blocked(GracefulKiller())
 
     log.info('Finalizado')
