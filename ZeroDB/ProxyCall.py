@@ -5,11 +5,11 @@ Update on 20201204
 @author: Eduardo Pagotto
  '''
 
-from ZeroDB.ZeroDBClient import SessionDB
+from ZeroDB.ZeroDBClient import ZdbClientSession
 import logging
 
 class ProxyCall(object):
-    def __init__(self, function : str, session : SessionDB, table_name : str, count : int):
+    def __init__(self, function : str, session : ZdbClientSession, table_name : str, count : int):
         self.function = function
         self.session = session
         self.table_name = table_name

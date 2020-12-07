@@ -10,7 +10,8 @@ import logging
 from datetime import datetime
 from bson.objectid import ObjectId
 
-from tinydb import Query, where
+from tinydb import Query, queries, where
+import tinydb
 from tinydb.operations import increment
 
 from ZeroDB import ZeroDBClient, ZeroDbLock
@@ -71,6 +72,10 @@ if __name__ == '__main__':
                                 'sexo':False,
                                 'idade':30,
                                 'last':datetime.timestamp(datetime.now())})
+
+            querie = tinydb.Query()
+            #var = querie.sexo == False
+            result2 = ztr.search(querie.sexo == False)
 
             # query com where
             result2 = ztr.search(where('sexo') == False)

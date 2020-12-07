@@ -10,21 +10,21 @@ import logging
 
 from ZeroDB.utils import AbortSignal
 from ZeroDB.ProxyCall import ProxyCall
-from ZeroDB.ZeroDBClient import SessionDB
+from ZeroDB.ZeroDBClient import ZdbClientSession
 
 class ZeroDbLock(object):
 
     serial = 0
     mutex_serial = threading.Lock()
 
-    def __init__(self, session : SessionDB, table_name: str):
+    def __init__(self, session : ZdbClientSession, table_name: str):
 
         with ZeroDbLock.mutex_serial:
 
             self.count = ZeroDbLock.serial
             ZeroDbLock.serial += 1
 
-            self.session : SessionDB = session
+            self.session : ZdbClientSession = session
             self.table_name : str = table_name
             self.log = logging.getLogger('ZeroDB')
             self.log.debug('Transaction %d', self.count)
