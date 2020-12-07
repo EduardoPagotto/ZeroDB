@@ -9,7 +9,7 @@ from Zero.ProxyObject import ProxyObject
 from typing import List, Optional
 import logging
 
-from ZeroDB.ZdbClientSession import ZdbClientSession
+from ZeroDB.client.ZdbClientSession import ZdbClientSession
 
 class ZeroDBClient(object):
     """[Classe de Conexao ao Servidor remoto]
