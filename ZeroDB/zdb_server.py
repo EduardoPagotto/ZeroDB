@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Created on 20190822
-Update on 20201204
+Update on 20201207
 @author: Eduardo Pagotto
 '''
 
@@ -14,7 +14,9 @@ from bson.objectid import ObjectId
 
 from Zero import ServiceObject
 
-class SessionServerDB(object):
+__all__ = ('ZdbServer', 'ZdbServerSession')
+
+class ZdbServerSession(object):
     def __init__(self, database_name : str) -> None:
 
         self.database_name = database_name
@@ -38,8 +40,10 @@ class SessionServerDB(object):
     def unlock(self):
         self.critical.release()
 
+#---
+
 class ProxyDB(object):
-    def __init__(self, function_name : str, sessions : SessionServerDB):
+    def __init__(self, function_name : str, sessions : ZdbServerSession):
         self.function_name = function_name
         self.sessions = sessions
         self.log = logging.getLogger('ZeroDB.Server')
@@ -63,14 +67,16 @@ class ProxyDB(object):
         function = getattr(session.table, self.function_name)
         return function(*args, **kargs)
 
-class ZeroDBServer(ServiceObject):
+#---
+
+class ZdbServer(ServiceObject):
     def __init__(self, str_connection : str) -> None:
         super().__init__(str_connection, self)  # tcp://127.0.0.1:5151 #uds://./uds_db_teste
 
         self.log = logging.getLogger('ZeroDB.Server')
         self.log.info('Servidor ativo: %s', str_connection)
 
-        self.sessions : List[SessionServerDB] = []
+        self.sessions : List[ZdbServerSession] = []
 
     def open(self, database_name : str) -> str:
 
@@ -81,13 +87,13 @@ class ZeroDBServer(ServiceObject):
                 session = st
 
         if session is None:
-            session = SessionServerDB(database_name)
+            session = ZdbServerSession(database_name)
             self.log.info('new server session: %s', session.id)
             self.sessions.append(session)
 
         return session.id
 
-    def __find_session(self, id : str) -> SessionServerDB:
+    def __find_session(self, id : str) -> ZdbServerSession:
         for session in self.sessions:
             if session.id == id:
                 return session

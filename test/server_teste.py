@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 '''
 Created on 20200603
-Update on 20200603
+Update on 20201207
 @author: Eduardo Pagotto
 '''
-
-#pylint: disable=C0301, C0116, W0703, C0103, C0115
 
 import logging
 
 from Zero import GracefulKiller
-from ZeroDB.zdb_server import ZdbServer
+from ZeroDB import ZdbServer
 
 if __name__ == '__main__':
 

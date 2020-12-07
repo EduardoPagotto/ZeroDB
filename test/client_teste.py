@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Created on 20200603
-Update on 20201204
+Update on 20201207
 @author: Eduardo Pagotto
 '''
 
@@ -10,13 +10,10 @@ import logging
 from datetime import datetime
 from bson.objectid import ObjectId
 
-from tinydb import Query, queries, where
-import tinydb
-from tinydb.operations import increment
+#from tinydb import Query, queries, where
+#from tinydb.operations import increment
 
-#from ZeroDB import ZeroDBClient, ZeroDbLock
-#from ZeroDB.client.ZdbClient import ZdbClient, ZdbLock
-from ZeroDB.zdb_client import ZdbClient, ZdbLock
+from ZeroDB import ZdbClient, ZdbLock
 
 if __name__ == '__main__':
 
